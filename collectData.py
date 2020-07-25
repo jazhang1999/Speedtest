@@ -5,7 +5,18 @@ import json
 import time
 import subprocess
 import sqlite3
+import sys
+import pdb
 from datetime import datetime
+
+# Connect to our database speedData.db
+conn = sqlite3.connect('speedData.db')
+c = conn.cursor()
+
+# Retrieve command-line arguments:
+c.execute("create table " + str(sys.argv[1]) + " (test_id integer PRIMARY KEY, time text, duration text, intervals integer, upload_speed integer, download_speed integer)")
+
+intervals = int(sys.argv[2])
 
 # Notify the user that the aws ec2 instance is starting, and then open it. Write
 # the output to status.json 
@@ -34,43 +45,41 @@ while True:
 os.system("echo Allow EC2 instance to launch iperf3 server")
 time.sleep(5)
 
-# Create the command needed for the local machine to communicate to the EC2 server. Line 39
+# Create the command needed for the local machine to communicate to the EC2 server. Line 55-56
 # is used to retrieve the IP address of the ec2 instance (changes every time it is launched)
 output = subprocess.check_output("aws ec2 describe-instances --instance-ids i-06611553665cca9ac --query Reservations[0].Instances[0].PublicIpAddress", shell=True).strip()
-command = "iperf3 -c " + output.decode("utf-8") + " -J -f m"
+command = "iperf3 -c " + output.decode("utf-8") + " -J"
 
-# Simutaneously run the command and collect information 
-results = json.loads(subprocess.check_output(command, shell=True).decode("utf-8"))
+while intervals > 0:
+    # Simutaneously run the command and collect information 
+    results = json.loads(subprocess.check_output(command, shell=True).decode("utf-8"))
 
-# We focus on collecting 3 fields - upload speed, download speed, and time
-upload_speed = results["end"]["sum_sent"]["bits_per_second"]
-download_speed = results["end"]["sum_received"]["bits_per_second"]
-duration = results["end"]["sum_received"]["seconds"]
-intervals = len(results["intervals"])
-time = results["start"]["timestamp"]["time"]
+    # We focus on collecting 3 fields - upload speed, download speed, and time
+    upload_speed = float(results["end"]["sum_sent"]["bits_per_second"]) / 1000000
+    download_speed = float(results["end"]["sum_received"]["bits_per_second"]) / 1000000
+    duration = results["end"]["sum_received"]["seconds"]
+    Time = results["start"]["timestamp"]["time"]
 
-# Testing purposes only, will need to remove later on
-print("Upload speed: " + str(float(upload_speed / 1000000)))
-print("Download speed: " + str(float(download_speed / 1000000)))
-print("Intervals: " + str(intervals))
-print("Time: " + str(time))
-print("Duration: " + str(duration))
+    # Testing purposes only, will need to remove later on
+    print("Upload speed: " + str(upload_speed))
+    print("Download speed: " + str(download_speed))
+    print("Intervals: " + str(intervals))
+    print("Time: " + str(Time))
+    print("Duration: " + str(duration))
 
-# Connect to our database speedData.db
-conn = sqlite3.connect('speedData.db')
-c = conn.cursor()
 
-# Create the table initially - comment out after first run
-# c.execute("""create table test_measurements(
-#              test_id integer PRIMARY KEY,
-#              time text,
-#              duration text,
-#              intervals integer,
-#              upload_speed integer,
-#              download_speed integer)""")
+    # Create the table initially - comment out after first run
+    # c.execute("""create table test_measurements(
+    #              test_id integer PRIMARY KEY,
+    #              time text,
+    #              duration text,
+    #              intervals integer,
+    #              upload_speed integer,
+    #              download_speed integer)""")
 
-# c.execute("INSERT INTO betaMeasurements VALUES (?, ?, ?)", (time, upload_speed, download_speed))
-c.execute("INSERT INTO test_measurements(time, duration, intervals, upload_speed, download_speed) VALUES (?, ?, ?, ?, ?)", (time, duration, intervals, upload_speed, download_speed))
+    c.execute("INSERT INTO " + sys.argv[1] + " (time, duration, intervals, upload_speed, download_speed) VALUES (?, ?, ?, ?, ?)", (Time, duration, intervals, upload_speed, download_speed))
+    intervals = intervals - 1 
+    time.sleep(10)
 
 conn.commit()
 conn.close()
