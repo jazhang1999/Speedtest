@@ -23,9 +23,17 @@ __Notes on the EC2 Instance:__
 * There is only ever one instance. This project does not delete old or create new instances. This for optimizing the code, but also for making sure we do not have to continuously reinstall iperf3 and rewrite the crontab on every potentially new instance created
 
 # Crontab
-The only crontab command we run on the local machine is `*/15 * * * * /home/nick/src/git/Speedtest/runner.sh > /tmp/run.log 2>&1` on my personal machine. It calls the runner.sh, which triggers the python code to communicate with the EC2 instance and grab measurement data, every 15 minutes. Since everything crontab executes is backend, we write the output to a log so that in the case of an error, we can see exactly what went wrong. For debugging and checking purposes only. 
+The only crontab command we run on the local machine is `*/15 * * * * /home/nick/src/git/Speedtest/runner.sh > /tmp/run.log 2>&1` on my personal machine. It calls the runner.sh, which triggers the python code to communicate with the EC2 instance and grab measurement data, every 15 minutes. Since everything crontab executes is backend, we write the output to a log so that in the case of an error, we can see exactly what went wrong. For debugging and checking purposes only. It is important to note that crontab only runs a __shell__ script every 15 minutes. This is done because we want to control whether the program will keep running or not in the shell script, not the crontab. More on that below 
 
 The command that is run in the EC2 instance is `@reboot iperf3 -s > /tmp/run.log 2>&1`. This will launch an iperf3 server that the local machine can communicate with upon being launched. Once again, any output will be written to a log file for checking purposes
 
+# Shell Scripts
+We use 2 shell scripts to control the running of the data collection:
 
+`#!/bin/bash
 
+FILE=/home/nick/src/git/Speedtest/marker
+
+if test -f "$FILE"; then
+    /usr/bin/python3 /home/nick/src/git/Speedtest/newCollectData.py
+fi`
