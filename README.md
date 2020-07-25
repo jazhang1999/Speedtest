@@ -60,17 +60,14 @@ else
     esac
 fi
 ```
-This is some example code on how to toggle on/off
+Toggling on will look like this:
 ```
 nick@DESKTOP-IU7TM26:~/src/git/Speedtest$ ./toggleRunner.sh
 Script is inactive, start it up? (y/n)y
-nick@DESKTOP-IU7TM26:~/src/git/Speedtest$ ls
-MyKeyPair.pem  SQLiteTest.py   connectEC2v1.sh  newCollectData.py  speedData.db  toggleRunner.sh
-README.md      collectData.py  marker           runner.sh          status.json
+```
+While toggling off will look like this:
+```
 nick@DESKTOP-IU7TM26:~/src/git/Speedtest$ ./toggleRunner.sh
 Script is active, shut it down? (y/n)y
-nick@DESKTOP-IU7TM26:~/src/git/Speedtest$ ls
-MyKeyPair.pem  SQLiteTest.py   connectEC2v1.sh    runner.sh     status.json
-README.md      collectData.py  newCollectData.py  speedData.db  toggleRunner.sh
 ```
 
