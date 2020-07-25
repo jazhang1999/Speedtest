@@ -28,8 +28,9 @@ The only crontab command we run on the local machine is `*/15 * * * * /home/nick
 The command that is run in the EC2 instance is `@reboot iperf3 -s > /tmp/run.log 2>&1`. This will launch an iperf3 server that the local machine can communicate with upon being launched. Once again, any output will be written to a log file for checking purposes
 
 # Shell Scripts
-We use 2 shell scripts to control the running of the data collection:
+We use 2 shell scripts to control the running of the data collection. While adding code blocks in the readme is generally not a good thing to do, I feel showing here would be more intuitive than a longer explanation:
 
+The first one, __runner.sh__, will actually call the python program that facillitates the data collection. To decide whether or not to collect, it uses a marker file named `marker` to check to see if it should run or not. If it can find it, the program will run. If not, nothing will be done. In this way, we can turn the program on and off without having to constantly modify the crontab. 
 ```
 #!/bin/bash
 
@@ -39,3 +40,24 @@ if test -f "$FILE"; then
     /usr/bin/python3 /home/nick/src/git/Speedtest/newCollectData.py
 fi
 ```
+For the actual toggling, here is the script __toggleRunner.sh__ that adds in or removes the marker file. 
+```
+#!/bin/bash
+
+FILE=/home/nick/src/git/Speedtest/marker
+
+if test -f "$FILE"; then
+    read -n1 -p "Script is active, shut it down? (y/n)" doit
+    case $doit in
+        y|Y) echo ; rm 'marker' ;;
+        n|N) echo ; echo 'Okay, script will continue running' ;;
+    esac
+else
+    read -n1 -p "Script is inactive, start it up? (y/n)" doit
+    case $doit in
+        y|Y) echo ; touch 'marker' ;;
+        n|N) echo ; echo 'okay, script will stay dormant';;
+    esac
+fi
+```
+
