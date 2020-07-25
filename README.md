@@ -1,5 +1,5 @@
 # Speedtest
-Code to measure the upload/download speed of my computer using iperf3. This project inovlves a variety of tools that we wanted to experiment with, so we designed the layout and functionality of the project around those tools.
+Code to measure the upload/download speed of my computer using iperf3. This project inovlves a variety of tools that we wanted to experiment with, so we designed the layout and functionality of the project around those tools. While the actual code is written in Python, we also wrote a couple shell scripts to communicate with tools like crontab.
 
 # Topics
 The project uses 3 items to work correctly:
@@ -12,6 +12,10 @@ This was most likely the most complicated step of the entire project. We used AW
 * Eukreda!: https://www.youtube.com/watch?v=sLtf7Sx8lsQ&t=1791s
 * Amazon Setup Page: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html
 
-In addition to creating the EC2 instance, there were a couple configurations in the .aws folder in the home directory. 
+__In addition to creating the EC2 instance, there were a couple configurations in the .aws folder in the home directory.__ 
 * credentials: Swap it out with the lines that AWS CLI gave me (We used AWS Educate, so this may be special to us)
 * config: Set the output = json and region = us-east-1. This will allow output for aws commands to show up in json format (which is much easier to parse than a formatted table or hard text), but more importantly sets the correct region of our instance. 
+
+__Notes on the EC2 Instance:__
+* We created an Ubuntu EC2 instance, since we have the most experience using that distribution of linux than any other. 
+* There is only ever one instance. This project does not delete old or create new instances. While this is also for optimization later for the code, there
