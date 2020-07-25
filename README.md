@@ -30,10 +30,12 @@ The command that is run in the EC2 instance is `@reboot iperf3 -s > /tmp/run.log
 # Shell Scripts
 We use 2 shell scripts to control the running of the data collection:
 
-`#!/bin/bash
+```
+#!/bin/bash
 
 FILE=/home/nick/src/git/Speedtest/marker
 
 if test -f "$FILE"; then
     /usr/bin/python3 /home/nick/src/git/Speedtest/newCollectData.py
-fi`
+fi
+```
