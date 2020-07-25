@@ -11,6 +11,7 @@ The project uses 3 items to work correctly:
 This was most likely the most complicated step of the entire project. We used AWS CLI on Windows Subsystem for Linux (WSL), which made the process a little easier since it allowed for certain steps, like creating a key-pair and configuring security settings for the EC2 instance, to be done over command line. Youtube videos were the best walkthrough for this type of task, as well as Amazon's own setup manual on their website:
 * Eukreda!: https://www.youtube.com/watch?v=sLtf7Sx8lsQ&t=1791s
 * Amazon Setup Page: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html
+
 In addition to creating the EC2 instance, there were a couple configurations in the /aws folder in the home directory. These involved modifying 2 files:
 * credentials: Swap it out with the lines that AWS CLI gave me (We used AWS Educate, so this may be special to us)
 * config: Set the output = json and region = us-east-1. This will allow output for aws commands to show up in json format (which is much easier to parse than a formatted table or hard text), but more importantly sets the correct region of our instance. 
