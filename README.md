@@ -7,6 +7,8 @@ The project uses 3 items to work correctly:
 * Crontab - used to automate the data collection. We have it set to collect ever 15 minutes. Can be toggled on and off
 * SQLite3 - We used this to store our data. As of right now, no way of representing said data.
 
+# iPerf3
+
 # Setting up the EC2 Instance
 This was most likely the most complicated step of the entire project. We used AWS CLI on Windows Subsystem for Linux (WSL), which made the process a little easier since it allowed for certain steps, like creating a key-pair and configuring security settings for the EC2 instance, to be done over command line. Youtube videos were the best walkthrough for this type of task, as well as Amazon's own setup manual on their website:
 * Eukreda!: https://www.youtube.com/watch?v=sLtf7Sx8lsQ&t=1791s
@@ -18,4 +20,12 @@ __In addition to creating the EC2 instance, there were a couple configurations i
 
 __Notes on the EC2 Instance:__
 * We created an Ubuntu EC2 instance, since we have the most experience using that distribution of linux than any other. 
-* There is only ever one instance. This project does not delete old or create new instances. While this is also for optimization later for the code, there
+* There is only ever one instance. This project does not delete old or create new instances. This for optimizing the code, but also for making sure we do not have to continuously reinstall iperf3 and rewrite the crontab on every potentially new instance created
+
+# Crontab
+The only crontab command we run on the local machine is `*/15 * * * * /home/nick/src/git/Speedtest/runner.sh > /tmp/run.log 2>&1` on my personal machine. It calls the runner.sh, which triggers the python code to communicate with the EC2 instance and grab measurement data, every 15 minutes. Since everything crontab executes is backend, we write the output to a log so that in the case of an error, we can see exactly what went wrong. For debugging and checking purposes only. 
+
+The command that is run in the EC2 instance is `@reboot iperf3 -s > /tmp/run.log 2>&1`. This will launch an iperf3 server that the local machine can communicate with upon being launched. Once again, any output will be written to a log file for checking purposes
+
+
+
