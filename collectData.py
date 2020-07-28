@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+# Older version of data collection. Does everything inside the program, no crontab used
 import os
 import json
 import time

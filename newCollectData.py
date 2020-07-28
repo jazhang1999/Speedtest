@@ -8,8 +8,8 @@ import sqlite3
 from datetime import datetime
 
 # const
-AWS = "/home/nick/.local/bin/aws"
-TMPLOG = "/tmp/status.json"
+AWS = "/usr/bin/aws"
+TMPLOG = "/home/nick/src/git/Speedtest/status.json"
 
 # Connect to our database speedData.db
 conn = sqlite3.connect('/home/nick/src/git/Speedtest/speedData.db')
