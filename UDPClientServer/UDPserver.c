@@ -37,7 +37,7 @@ int main() {
     /* Bind with sockfd from before. Cast servaddr to be a sockaddr for added
      * measure, and include size of servaddr for third parameter. Once again,
      * check to see if there is a need to exit prematurely */
-    if ( bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0 ) 
+    if ( bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) 
     { 
         perror("Failed to bind"); 
         close(sockfd);
@@ -45,19 +45,25 @@ int main() {
     } 
     
     int val = sizeof(cliaddr);    
-
-    int n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, 0, &val);
-    buffer[n] = '\n';
-    printf("Message from client: %s", buffer);
-
-    int check = sendto(sockfd, (const char *)reply, strlen(reply), 0,
-                (const struct sockaddr *)&cliaddr, val);
-    if (check < 0)
-    {
-        perror("Server failed to send");
-    }
     
-    printf("Message has been sent back to client\n");
+    while (1)
+    {
+            int n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL,&cliaddr, &val);
+            buffer[n] = '\n';
+            printf("Message from client: %s", buffer);
+
+            int check = sendto(sockfd, (const char *)reply, strlen(reply), 0,
+                        (const struct sockaddr *)&cliaddr, val);
+            if (check < 0)
+            {
+                perror("Server failed to send");
+                close(sockfd);
+                exit(EXIT_FAILURE);
+            }
+            
+            printf("Message has been sent back to client\n");
+    }
+
     close(sockfd);
     return 0; 
-} 
+}         
