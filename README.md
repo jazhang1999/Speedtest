@@ -8,6 +8,7 @@ The project uses 3 items to work correctly:
 * SQLite3 - We used this to store our data. As of right now, no way of representing said data.
 
 # iPerf3
+I chose to use a modified version of iPerf3, which allowed for the results to be saved as a log file, a feature that was not available in the standard version of iperf3 that can be obtained from `sudo apt get install iperf3`
 
 # Setting up the EC2 Instance
 This was most likely the most complicated step of the entire project. We used AWS CLI on Windows Subsystem for Linux (WSL), which made the process a little easier since it allowed for certain steps, like creating a key-pair and configuring security settings for the EC2 instance, to be done over command line. Youtube videos were the best walkthrough for this type of task, as well as Amazon's own setup manual on their website:
@@ -28,7 +29,7 @@ The only crontab command we run on the local machine is `*/15 * * * * /home/nick
 The command that is run in the EC2 instance is `@reboot iperf3 -s > /tmp/run.log 2>&1`. This will launch an iperf3 server that the local machine can communicate with upon being launched. Once again, any output will be written to a log file for checking purposes
 
 # Shell Scripts
-We use 2 shell scripts to control the running of the data collection. While adding code blocks in the readme is generally not a good thing to do, I feel showing here would be more intuitive than a longer explanation:
+We use 2 shell scripts to control the running of the data collection. 
 
 The first one, __runner.sh__, will actually call the python program that facillitates the data collection. To decide whether or not to collect, it uses a marker file named `marker` to check to see if it should run or not. If it can find it, the program will run. If not, nothing will be done. In this way, we can turn the program on and off without having to constantly modify the crontab. 
 ```
@@ -70,4 +71,4 @@ While toggling off will look like this:
 nick@DESKTOP-IU7TM26:~/src/git/Speedtest$ ./toggleRunner.sh
 Script is active, shut it down? (y/n)y
 ```
-
+In this way, we allow the user to activate/deactivate this program without having to do anything too complicated
