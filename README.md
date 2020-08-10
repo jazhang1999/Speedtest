@@ -72,3 +72,6 @@ nick@DESKTOP-IU7TM26:~/src/git/Speedtest$ ./toggleRunner.sh
 Script is active, shut it down? (y/n)y
 ```
 In this way, we allow the user to activate/deactivate this program without having to do anything too complicated
+
+# Graphing using Python and SQL
+![1](https://https://github.com/jazhang1999/Speedtest/blob/master/test.png?raw=true)
