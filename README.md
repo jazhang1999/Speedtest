@@ -1,6 +1,8 @@
 # Speedtest
 Code to measure the upload/download speed of my computer using iperf3. This project inovlves a variety of tools that we wanted to experiment with, so we designed the layout and functionality of the project around those tools. While the actual code is written in Python, we also wrote a couple shell scripts to communicate with tools like crontab.
 
+__Update__ - Previously, I accidentily uploaded a file called MyKeyPair.pem, which would allow any user to launch and go to my Amazon EC2 instance. Since I do not want to destroy the entire upload history of this repo to remove it, I have replaced the key with something only stored on my local machine. Therefore, while the code is still valid, you will have to use your own EC2 instance and Key-Pairs to be able to make this process run
+
 # Topics
 The project uses 3 items to work correctly:
 * Amazon Web Services (AWS) - We used an EC2 instance to host an iperf3 server, so that my computer could communicate with it and get relevent statistics (upload / download speed)
