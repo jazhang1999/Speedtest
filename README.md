@@ -76,5 +76,6 @@ Script is active, shut it down? (y/n)y
 In this way, we allow the user to activate/deactivate this program without having to do anything too complicated
 
 # Graphing using Python and SQL
-This is very much a work in progress. While the code for reading from the sqlite3 database is good, the formatting is very off. This will be addressed at a later date
+This is very much a work in progress. While the code for reading from the sqlite3 database is good, the formatting is very off. This will be addressed at a later date.
+
 ![1](https://github.com/jazhang1999/Speedtest/blob/master/Figures/Figure1.png?raw=true)
