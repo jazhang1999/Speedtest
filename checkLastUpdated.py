@@ -12,3 +12,6 @@ if (currTime - modTime > 300):
 else:
     print(0) # System can stay on
     
+# This is code for the AWS EC2 (Ubuntu) instance. It is a safeguard against
+# the program running for too long. The code is moved to the other instance
+# vi ssh (operation)
