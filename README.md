@@ -45,6 +45,10 @@ __collectData.py__ is the program called periodically by runner. It works with _
 
 __====================================== Amazon EC2 Instance ======================================__
 
+__Amazon EC2 Crontab:__
+`@reboot nohup /home/ubuntu/iperfStart.sh`
+`@reboot sleep 300; /home/ubuntu/testAutoShutdown.sh >/home/ubuntu/test.log 2>&1 &`
+
 # Notes on iPerf3
 Originally I used the default version of iperf3 that you can get, i.e the one that comes from running `sudo apt get install iperf3`. This works fine for the purpose of displaying the data. However, there is no way to save this after the initial run in a straightforward way, meaning that I would have to either find some workaround or use a different tool. 
 
