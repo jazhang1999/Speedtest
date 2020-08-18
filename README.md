@@ -12,8 +12,10 @@ The project uses 3 items to work correctly:
 * __Crontab__ - After making sure that data could be retrieved and stored, I wanted a way to automate the process, so that the computer would consistently be able to collect good information without me having to run the code manually periodically over that period of time. Setting up a Crontab file on the client side (my computer) was a good way to do this. I also created one on the server side (AWS EC2 instance) so that it would be able to shut down automatically if something went wrong. 
 
 
-# iPerf3
-I chose to use a modified version of iPerf3, which allowed for the results to be saved as a log file, a feature that was not available in the standard version of iperf3 that can be obtained from `sudo apt get install iperf3`
+# Notes on iPerf3
+Originally I used the default version of iperf3 that you can get, i.e the one that comes from running `sudo apt get install iperf3`. This works fine for the purpose of displaying the data. However, there is no way to save this after the initial run in a straightforward way, meaning that I would have to either find some workaround or use a different tool. 
+
+Thereby, I chose to use a modified version of iperf3, that would be able to write the resulting output to a logfile. Link is here: https://github.com/esnet/iperf
 
 # Setting up the EC2 Instance
 This was most likely the most complicated step of the entire project. We used AWS CLI on Windows Subsystem for Linux (WSL), which made the process a little easier since it allowed for certain steps, like creating a key-pair and configuring security settings for the EC2 instance, to be done over command line. Youtube videos were the best walkthrough for this type of task, as well as Amazon's own setup manual on their website:
