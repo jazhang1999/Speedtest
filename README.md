@@ -21,7 +21,19 @@ __======================================= Local Computer =======================
 
 __Local computer's crontab:__ `*/15 * * * * /home/nick/src/git/Speedtest/runner.sh > /tmp/run.log 2>&1`
 
-__runner.sh and toggleRunner.sh__ are both used in conjunction with the local computer's crontab listed above to automate the process of data retrieval. By
+__connectEC2.sh__ is a way for the user to connect to the EC2 instance in order to test or configure the server end of iperf3. It takes the ip address of the EC2 instance (changes every time when launched, so make sure you have the AWS console open). For example, a way to launch is `./connectEC2.sh 123.456.7890`. Also note that I have an absolute path to the key pair needed to access the EC2 instance, which a different user will not have. That must be switched out with the absolute path of the user's key. There may be a prompt that shows up when first running this, just say yes and the server should connect. Any other problems must be resolved through AWS
+
+__runner.sh and toggleRunner.sh__ are both used in conjunction with the local computer's crontab listed above to automate the process of data retrieval. As displayed above, crontab will run runner.sh every 15 minutes. However, that just means that this program will just run without stop, or when the user exits in one way or the other. We do not want that. That is why toggleRunner.sh is a script that the user runs to tell runner.sh to either run the data retrieval or do nothing. Runner.sh relies on a __marker file__ named `marker` in order to do any work:
+```
+#!/bin/bash
+
+FILE=/home/nick/src/git/Speedtest/marker
+
+if test -f "$FILE"; then
+    /usr/bin/python3 /home/nick/src/git/Speedtest/newCollectData.py
+fi
+```
+toggleRunner.sh either removes the marker file (do not collect data) or adds in the marker file (start collecting data). In this way, the user can control when or when not to collect data without having to modify crontab every time they want to turn something on or off. 
 
 # Notes on iPerf3
 Originally I used the default version of iperf3 that you can get, i.e the one that comes from running `sudo apt get install iperf3`. This works fine for the purpose of displaying the data. However, there is no way to save this after the initial run in a straightforward way, meaning that I would have to either find some workaround or use a different tool. 
