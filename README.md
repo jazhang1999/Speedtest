@@ -1,13 +1,16 @@
 # Speedtest with AWS EC2 instance
-Code to measure the upload/download speed of my computer using iperf3. This project inovlves a variety of tools that we wanted to experiment with, so we designed the layout and functionality of the project around those tools. While the actual code is written in Python, we also wrote a couple shell scripts to communicate with tools like crontab.
+Code to measure the upload/download speed of my computer using iperf3. This project inovlves a variety of tools that I wanted to experiment with, so the layout and functionality of the project was designed around those tools. While the actual code is written in Python, I also wrote a couple shell scripts to handle automating the process (it would run automatically instead of manually running a script to collect data)
+
+I wrote this code to test the network speed in different parts of my house, to prove that the my room in the house had the worst connection. While that turned out to be ultimately not true (there were even worse areas) I still really enjoyed the creation of this project and the experience I now have working with the tools I used.
 
 __Update__ - You will need your own AWS account and Key-pair to be able to run this project. I also hard-coded some specific parameters into my code, so anyone that wants to run this code will also need to change some constants within the source code as well
 
 # Topics
 The project uses 3 items to work correctly:
-* Amazon Web Services (AWS) - We used an EC2 instance to host an iperf3 server, so that my computer could communicate with it and get relevent statistics (upload / download speed)
-* Crontab - used to automate the data collection. We have it set to collect ever 15 minutes. Can be toggled on and off
-* SQLite3 - We used this to store our data. As of right now, no way of representing said data.
+* __Amazon Web Services (AWS)__ - I used an EC2 instance to host an iperf3 server, so that my computer could communicate with it and get relevent statistics (upload / download speed) I do not have a regular account (used a Student account) so my experiences may vary from someone who has the full suite of features that Amazon offers.
+* SQLite3 - I wanted to have a way to collect the data I retrieved. With my version of iperf3, the client (my local computer) can retrieve important information like upload speed and download speed as part of a `.json` file. Parsing that information and putting it into a sqlite table was a good way to not only store the data, but to also later graph it later on down the track (more on that later)
+* __Crontab__ - After making sure that data could be retrieved and stored, I wanted a way to automate the process, so that the computer would consistently be able to collect good information without me having to run the code manually periodically over that period of time. Setting up a Crontab file on the client side (my computer) was a good way to do this. I also created one on the server side (AWS EC2 instance) so that it would be able to shut down automatically if something went wrong. 
+
 
 # iPerf3
 I chose to use a modified version of iPerf3, which allowed for the results to be saved as a log file, a feature that was not available in the standard version of iperf3 that can be obtained from `sudo apt get install iperf3`
