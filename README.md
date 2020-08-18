@@ -35,6 +35,8 @@ fi
 ```
 toggleRunner.sh either removes the marker file (do not collect data) or adds in the marker file (start collecting data). In this way, the user can control when or when not to collect data without having to modify crontab every time they want to turn something on or off. 
 
+__======================================= Amazon EC2 Instance =======================================__
+
 # Notes on iPerf3
 Originally I used the default version of iperf3 that you can get, i.e the one that comes from running `sudo apt get install iperf3`. This works fine for the purpose of displaying the data. However, there is no way to save this after the initial run in a straightforward way, meaning that I would have to either find some workaround or use a different tool. 
 
