@@ -51,6 +51,12 @@ __Amazon EC2 Crontab:__
 
 `@reboot sleep 300; /home/ubuntu/testAutoShutdown.sh >/home/ubuntu/test.log 2>&1 &`
 
+__iperfStart.sh__ is the script that is run upon the EC2 instance starting up. It essentially launches the iperf server to listen for any client. I did not use the default version of iperf3, rather I used a modified version for this project to effectively achieve its objective. Details are down below. In the diagram above, __iperf3__ is the downloaded package that must be referenced rather than the normal iperf3 to launch that server. I also configured __iperf3__ to also generate a log file, which will be very important later on.
+
+__testAutoShutdown.sh__ and __checkLastUpdated.py__ are safeguards for the EC2 instance not shutting down. Previously, I mentioned that the last step of data collection was to shut down the EC2 instance via the client side (the local computer) of the process. However, there are cases where there will be errors (usually I/O from the testing I did) communicating with the server and telling it to shut down, meaning that the EC2 instance will be left on when it should not be. Given that Amazon's pricing model with AWS is dictated by how much you use their service, this is definetely not something that you want to happen. 
+
+Thereby, __testAutoShutdown.sh__ runs the python program __checkLastUpdated.py__, which will check whether that log file iperf3 created has changed within the last 5 minutes. If it has not, then it will signal to __testAutoShutdown.sh__, which will force the EC2 instance to shut down automatically. 
+
 # Notes on iPerf3
 Originally I used the default version of iperf3 that you can get, i.e the one that comes from running `sudo apt get install iperf3`. This works fine for the purpose of displaying the data. However, there is no way to save this after the initial run in a straightforward way, meaning that I would have to either find some workaround or use a different tool. 
 
