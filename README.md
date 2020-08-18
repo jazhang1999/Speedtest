@@ -17,7 +17,7 @@ The project uses 3 items to work correctly:
 
 For the sake of clarity, I have included all of the required files for both the AWS EC2 instance and the local computer in this git repository. I will also include crontab commands right here, so that you can just copy and paste into your crontab. Use the chart to decide which files you should move from your local computer to your EC2 instance.
 
-__======================================== Local Computer ========================================__
+__======================================= Local Computer =======================================__
 
 __Local computer's crontab:__ `*/15 * * * * /home/nick/src/git/Speedtest/runner.sh > /tmp/run.log 2>&1`
 
