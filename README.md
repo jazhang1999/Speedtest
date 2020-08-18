@@ -53,56 +53,6 @@ __Notes on the EC2 Instance:__
 * We created an Ubuntu EC2 instance, since we have the most experience using that distribution of linux than any other. 
 * There is only ever one instance. This project does not delete old or create new instances. This for optimizing the code, but also for making sure we do not have to continuously reinstall iperf3 and rewrite the crontab on every potentially new instance created
 
-# Crontab
-The only crontab command we run on the local machine is `*/15 * * * * /home/nick/src/git/Speedtest/runner.sh > /tmp/run.log 2>&1` on my personal machine. It calls the runner.sh, which triggers the python code to communicate with the EC2 instance and grab measurement data, every 15 minutes. Since everything crontab executes is backend, we write the output to a log so that in the case of an error, we can see exactly what went wrong. For debugging and checking purposes only. It is important to note that crontab only runs a __shell__ script every 15 minutes. This is done because we want to control whether the program will keep running or not in the shell script, not the crontab. More on that below 
-
-The command that is run in the EC2 instance is `@reboot iperf3 -s > /tmp/run.log 2>&1`. This will launch an iperf3 server that the local machine can communicate with upon being launched. Once again, any output will be written to a log file for checking purposes
-
-# Shell Scripts
-We use 2 shell scripts to control the running of the data collection. 
-
-The first one, __runner.sh__, will actually call the python program that facillitates the data collection. To decide whether or not to collect, it uses a marker file named `marker` to check to see if it should run or not. If it can find it, the program will run. If not, nothing will be done. In this way, we can turn the program on and off without having to constantly modify the crontab. 
-```
-#!/bin/bash
-
-FILE=/home/nick/src/git/Speedtest/marker
-
-if test -f "$FILE"; then
-    /usr/bin/python3 /home/nick/src/git/Speedtest/newCollectData.py
-fi
-```
-For the actual toggling, here is the script __toggleRunner.sh__ that adds in or removes the marker file. 
-```
-#!/bin/bash
-
-FILE=/home/nick/src/git/Speedtest/marker
-
-if test -f "$FILE"; then
-    read -n1 -p "Script is active, shut it down? (y/n)" doit
-    case $doit in
-        y|Y) echo ; rm 'marker' ;;
-        n|N) echo ; echo 'Okay, script will continue running' ;;
-    esac
-else
-    read -n1 -p "Script is inactive, start it up? (y/n)" doit
-    case $doit in
-        y|Y) echo ; touch 'marker' ;;
-        n|N) echo ; echo 'okay, script will stay dormant';;
-    esac
-fi
-```
-Toggling on will look like this:
-```
-nick@DESKTOP-IU7TM26:~/src/git/Speedtest$ ./toggleRunner.sh
-Script is inactive, start it up? (y/n)y
-```
-While toggling off will look like this:
-```
-nick@DESKTOP-IU7TM26:~/src/git/Speedtest$ ./toggleRunner.sh
-Script is active, shut it down? (y/n)y
-```
-In this way, we allow the user to activate/deactivate this program without having to do anything too complicated
-
 # Graphing using Python and SQL
 This is very much a work in progress. While the code for reading from the sqlite3 database is good, the formatting is very off. This will be addressed at a later date.
 
