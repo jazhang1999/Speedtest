@@ -35,6 +35,14 @@ fi
 ```
 toggleRunner.sh either removes the marker file (do not collect data) or adds in the marker file (start collecting data). In this way, the user can control when or when not to collect data without having to modify crontab every time they want to turn something on or off. 
 
+__collectData.py__ is the program called periodically by runner. It works with __status.json__ and __speedData.db__ (sqlite3) in order to collect data in these steps:
+* Launch the EC2 instance of a specified process ID. I have mine currently hard-coded, so the user will have to switch it out for theirs. 
+* __status.json__ is used to track the status of the EC2 instance: whether it is booting up, has stopped, or is still running. 
+* Once it is confirmed that the EC2 instance is up and running, a iperf3 request is made to connect, and we begin getting measurements. This process usually takes around 10 seconds, although it can be configurable. More details inside source code of __collectData.py__
+* Select pieces of data from this measurement are then inserted as a row entry into the `test_measurements` table of __speedData.db__ 
+* Then we send a command to close down the EC2 instance. Again, some things are hard-coded and will have to be changed by the user
+
+
 __====================================== Amazon EC2 Instance ======================================__
 
 # Notes on iPerf3
