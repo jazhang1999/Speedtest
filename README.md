@@ -30,7 +30,7 @@ __runner.sh and toggleRunner.sh__ are both used in conjunction with the local co
 FILE=/home/nick/src/git/Speedtest/marker
 
 if test -f "$FILE"; then
-    /usr/bin/python3 /home/nick/src/git/Speedtest/newCollectData.py
+    /usr/bin/python3 /home/nick/src/git/Speedtest/collectData.py
 fi
 ```
 toggleRunner.sh either removes the marker file (do not collect data) or adds in the marker file (start collecting data). In this way, the user can control when or when not to collect data without having to modify crontab every time they want to turn something on or off. 
