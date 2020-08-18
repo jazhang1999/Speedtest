@@ -17,7 +17,7 @@ Originally I used the default version of iperf3 that you can get, i.e the one th
 
 Thereby, I chose to use a modified version of iperf3, that would be able to write the resulting output to a logfile. You can clone git clone the repo into your directory and then have to change which iperf3 version will be running: https://github.com/esnet/iperf
 
-# Setting up the EC2 Instance
+# Notes on EC2 Instance
 This was most likely the most complicated step of the entire project. We used AWS CLI on Windows Subsystem for Linux (WSL), which made the process a little easier since it allowed for certain steps, like creating a key-pair and configuring security settings for the EC2 instance, to be done over command line. Youtube videos were the best walkthrough for this type of task, as well as Amazon's own setup manual on their website:
 * Eukreda!: https://www.youtube.com/watch?v=sLtf7Sx8lsQ&t=1791s
 * Amazon Setup Page: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html
