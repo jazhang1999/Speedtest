@@ -11,6 +11,15 @@ The project uses 3 items to work correctly:
 * __SQLite3__ - I wanted to have a way to collect the data I retrieved. With my version of iperf3, the client (my local computer) can retrieve important information like upload speed and download speed as part of a `.json` file. Parsing that information and putting it into a sqlite table was a good way to not only store the data, but to also later graph it later on down the track (more on that later)
 * __Crontab__ - After making sure that data could be retrieved and stored, I wanted a way to automate the process, so that the computer would consistently be able to collect good information without me having to run the code manually periodically over that period of time. Setting up a Crontab file on the client side (my computer) was a good way to do this. I also created one on the server side (AWS EC2 instance) so that it would be able to shut down automatically if something went wrong. 
 
+# Blueprint of the Project
+
+(Insert chart here)
+
+For the sake of clarity, I have included all of the required files for both the AWS EC2 instance and the local computer in this git repository. I will also include crontab commands right here, so that you can just copy and paste into your crontab. Use the chart to decide which files you should move from your local computer to your EC2 instance. 
+
+__Local computer's crontab: __ `*/15 * * * * /home/nick/src/git/Speedtest/runner.sh > /tmp/run.log 2>&1`
+
+__runner.sh and toggleRunner.sh__ are both used in conjunction with the local computer's crontab listed above to automate the process of data retrieval. By
 
 # Notes on iPerf3
 Originally I used the default version of iperf3 that you can get, i.e the one that comes from running `sudo apt get install iperf3`. This works fine for the purpose of displaying the data. However, there is no way to save this after the initial run in a straightforward way, meaning that I would have to either find some workaround or use a different tool. 
