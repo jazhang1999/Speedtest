@@ -43,7 +43,7 @@ __collectData.py__ is the program called periodically by runner. It works with _
 * Then we send a command to close down the EC2 instance. Again, some things are hard-coded and will have to be changed by the user
 
 
-__====================================== Amazon EC2 Instance ======================================__
+__==================================== Amazon EC2 Instance ====================================__
 
 __Amazon EC2 Crontab:__
 
